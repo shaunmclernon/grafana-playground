@@ -1,26 +1,35 @@
 # Grafana playground
 
-Local lab for testing [Grafana] and [Loki] using [docker-compose]
+Local lab for testing [Grafana] and [Loki] using [docker-compose].
+
+This composition will create the following services:
+- [Grafana] - Visualisation UI - http://localhost:3000
+- [Loki] - Log store - http://localhost:3001
+- [Promtail] - Agent to ship logs to Loki
 
 >NOTE: This is intended for local use only
-
-## Prerequisites
+### Prerequisites
 
 This lab has been setup using:
 
 - [docker] >= 20.10.7
 - [docker-compose] >= 1.29.2 
 
-## Usage
+## Quick start
+
+To start the composition:
 
     docker-compose up -d
 
-This composition will create the following containers
-- [Grafana] (visualize metrics) http://localhost:3000
-- [Loki] (log store) http://localhost:3001
-- [Promtail] (agent to ship logs to Loki)
+To stop the composition:
 
-Navigate to http://localhost:3000 and login with user creds in config file.
+    docker-compose down
+
+## Data sources
+
+The lab creates a Grafana data source called _Loki_ that's connected to the default _Loki_.
+
+To provision additional data sources, see the Grafana [documentation] and add a config file to `./grafana-provisioning/datasources/` before starting the app.
 
 
 [Grafana]: https://grafana.com
@@ -29,3 +38,4 @@ Navigate to http://localhost:3000 and login with user creds in config file.
 [docker]: https://www.docker.com
 [Loki]: https://grafana.com/docs/loki/latest/
 [Promtail]: https://grafana.com/docs/loki/latest/clients/promtail/
+[documentation]: https://grafana.com/docs/grafana/latest/administration/provisioning/#datasources

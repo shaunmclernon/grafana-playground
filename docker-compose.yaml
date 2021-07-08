@@ -8,18 +8,23 @@ services:
     image: grafana/loki:2.0.0
     container_name: loki
     restart: unless-stopped
+    volumes:
+      - ./config.d:/mnt/config
     ports:
       - "3100:3100"
-    command: -config.file=/etc/loki/local-config.yaml
+    command: -config.file=/mnt/config/loki-config.yaml
     networks:
       - loki
 
   promtail:
     image: grafana/promtail:2.0.0
     container_name: promtail
+    restart: unless-stopped
     volumes:
+      - ./config.d:/mnt/config
       - /var/log:/var/log
-    command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/mnt/config/promtail-config.yaml
+    networks:
       - loki
 
   grafana:
@@ -27,7 +32,7 @@ services:
     container_name: grafana
     restart: unless-stopped
     volumes:
-      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana-provisioning/:/etc/grafana/provisioning
     ports:
       - "3000:3000"
     env_file:
